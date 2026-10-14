@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to LeetCommit - Setup</title>
+  <link rel="stylesheet" href="welcome.css">
+</head>
+<body>
+  <div class="welcome-container">
+    <!-- Header -->
+    <header class="welcome-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 128 128" width="28" height="28">
+            <path d="M 44 40 L 22 64 L 44 88" fill="none" stroke="#FFA116" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M 50 86 L 68 38 L 86 86" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M 57 70 L 79 70" fill="none" stroke="#FFA116" stroke-width="6" stroke-linecap="round"/>
+            <path d="M 68 38 Q 92 34 102 52 L 102 68" fill="none" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="102" cy="74" r="10" fill="#10B981"/>
+            <circle cx="102" cy="74" r="4.5" fill="#FFFFFF"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>LeetCommit</h1>
+          <p>Secure GitHub Sync for LeetCode</p>
+        </div>
+      </div>
+      <div class="privacy-badge">
+        <span class="lock-icon">🔒</span> 100% Client-Side &bull; Direct GitHub API
+      </div>
+    </header>
+
+    <!-- Stepper Progress Bar -->
+    <div class="stepper-bar">
+      <div class="step-node active" id="step-node-1">
+        <div class="step-circle">1</div>
+        <div class="step-label">GitHub Login</div>
+      </div>
+      <div class="step-line" id="step-line-1"></div>
+      <div class="step-node" id="step-node-2">
+        <div class="step-circle">2</div>
+        <div class="step-label">Select / Create Repo</div>
+      </div>
+      <div class="step-line" id="step-line-2"></div>
+      <div class="step-node" id="step-node-3">
+        <div class="step-circle">3</div>
+        <div class="step-label">Authorize & Start</div>
+      </div>
+    </div>
+
+    <!-- Alert Banner -->
+    <div id="alert-banner" class="alert-banner hidden">
+      <span id="alert-message"></span>
+    </div>
+
+    <!-- STEP 1: LOGIN WITH PAT -->
+    <section id="step-1" class="step-card active">
+      <div class="card-header">
+        <h2>Step 1: Connect Your GitHub Account</h2>
+        <p>Authenticate directly with GitHub using a Personal Access Token (PAT). No third-party OAuth app or intermediary servers.</p>
+      </div>
+
+      <div class="token-helper-card">
+        <div class="helper-title">🔑 Generate a token on GitHub (Takes 30 seconds):</div>
+        <div class="helper-actions">
+          <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" class="btn-token-link">
+            <span>Option A: Fine-Grained PAT (Recommended - 1 Repo Only)</span>
+            <span class="arrow">&rarr;</span>
+          </a>
+          <a href="https://github.com/settings/tokens/new?scopes=repo&description=LeetCommit" target="_blank" rel="noopener" class="btn-token-link secondary">
+            <span>Option B: Classic PAT (Scoped to <code>repo</code>)</span>
+            <span class="arrow">&rarr;</span>
+          </a>
+        </div>
+        <div class="helper-instructions">
+          <strong>Recommended:</strong> Choose <strong>Only select repositories</strong> &rarr; pick your LeetCode repo &rarr; Permissions &rarr; <strong>Contents: Read and write</strong>.
+        </div>
+      </div>
+
+      <div class="form-group mt-4">
+        <label for="pat-input" class="form-label">
+          <span>Enter your GitHub Personal Access Token (PAT)</span>
+          <span class="required">*</span>
+        </label>
+        <div class="input-password-wrapper">
+          <input 
+            type="password" 
+            id="pat-input" 
+            class="form-input" 
+            placeholder="github_pat_... or ghp_..." 
+            autocomplete="off" 
+            spellcheck="false" 
+            required 
+          />
+          <button type="button" id="toggle-pat-btn" class="btn-icon" title="Toggle visibility">👁️</button>
+        </div>
+      </div>
+
+      <div class="action-footer">
+        <button type="button" id="btn-login-step1" class="btn-primary">
+          <span class="btn-text">Log In with GitHub &rarr;</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP 2: SELECT OR CREATE REPOSITORY -->
+    <section id="step-2" class="step-card hidden">
+      <div class="card-header">
+        <div class="user-greeting-row">
+          <img id="user-avatar" class="user-avatar" src="" alt="Avatar" />
+          <div>
+            <h2>Welcome, <span id="user-login" class="text-amber"></span>! 👋</h2>
+            <p>Select where your solved LeetCode solutions and READMEs should be stored.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Repo Mode Tabs -->
+      <div class="tab-buttons">
+        <button type="button" id="tab-existing-btn" class="tab-btn active">
+          📁 Select Existing Repository
+        </button>
+        <button type="button" id="tab-create-btn" class="tab-btn">
+          ✨ Create New Repository
+        </button>
+      </div>
+
+      <!-- Tab Content: Existing Repo -->
+      <div id="tab-existing-content" class="tab-pane active">
+        <div class="form-group">
+          <label for="repo-dropdown" class="form-label">Select from your repositories:</label>
+          <select id="repo-dropdown" class="form-select">
+            <option value="">-- Loading repositories... --</option>
+          </select>
+        </div>
+        <div class="or-separator">or enter repository manually:</div>
+        <div class="form-group">
+          <input 
+            type="text" 
+            id="manual-repo-input" 
+            class="form-input" 
+            placeholder="username/repository-name" 
+            spellcheck="false" 
+          />
+        </div>
+      </div>
+
+      <!-- Tab Content: Create New Repo -->
+      <div id="tab-create-content" class="tab-pane hidden">
+        <div class="create-repo-box">
+          <div class="form-group">
+            <label for="new-repo-name" class="form-label">Repository Name:</label>
+            <input 
+              type="text" 
+              id="new-repo-name" 
+              class="form-input" 
+              value="leetcode-solutions" 
+              placeholder="e.g. leetcode-solutions" 
+              spellcheck="false" 
+            />
+          </div>
+          <div class="checkbox-row mt-2">
+            <label class="checkbox-label">
+              <input type="checkbox" id="new-repo-private" checked />
+              <span>Make this repository <strong>Private</strong></span>
+            </label>
+          </div>
+          <button type="button" id="btn-create-repo-action" class="btn-secondary mt-3">
+            ✨ Create Repository on GitHub
+          </button>
+        </div>
+      </div>
+
+      <!-- Branch settings -->
+      <div class="form-row mt-4">
+        <div class="form-group flex-1">
+          <label for="branch-input" class="form-label">Target Branch:</label>
+          <input 
+            type="text" 
+            id="branch-input" 
+            class="form-input" 
+            value="main" 
+            placeholder="main" 
+            spellcheck="false" 
+          />
+        </div>
+        <div class="form-group flex-2">
+          <label for="folder-format" class="form-label">Folder Structure:</label>
+          <select id="folder-format" class="form-select">
+            <option value="flat">0001-two-sum/ (Standard Numbered Slug)</option>
+            <option value="difficulty">Easy/0001-two-sum/ (Grouped by Difficulty)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="action-footer">
+        <button type="button" id="btn-back-step1" class="btn-ghost">&larr; Back</button>
+        <button type="button" id="btn-next-step2" class="btn-primary">
+          <span class="btn-text">Next: Review & Authorize &rarr;</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP 3: REVIEW & AUTHORIZE -->
+    <section id="step-3" class="step-card hidden">
+      <div class="card-header">
+        <h2>Step 3: Review & Authorize</h2>
+        <p>Verify your target repository and grant commit permission.</p>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-item">
+          <span class="summary-label">GitHub Account:</span>
+          <span class="summary-value" id="summary-user">@octocat</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Target Repository:</span>
+          <span class="summary-value text-green" id="summary-repo">octocat/leetcode-solutions</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Target Branch:</span>
+          <span class="summary-value" id="summary-branch">main</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Folder Layout:</span>
+          <span class="summary-value" id="summary-folder">0001-two-sum/</span>
+        </div>
+      </div>
+
+      <div class="permission-box mt-3">
+        <div class="permission-icon">🛡️</div>
+        <div class="permission-text">
+          <strong>Commit & Push Permission</strong><br>
+          LeetCommit will automatically commit your solved code files (e.g. <code>two-sum.py</code>) and <code>README.md</code> question details to this repository whenever you achieve an <strong>Accepted</strong> verdict on LeetCode.
+        </div>
+      </div>
+
+      <div class="action-footer">
+        <button type="button" id="btn-back-step2" class="btn-ghost">&larr; Back</button>
+        <button type="button" id="btn-authorize-finish" class="btn-primary btn-large">
+          <span class="btn-text">Authorize & Start Syncing 🚀</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP 4: SUCCESS / COMPLETE -->
+    <section id="step-success" class="step-card hidden text-center">
+      <div class="success-icon-wrapper">
+        <div class="success-icon">✓</div>
+      </div>
+      <h2 class="success-title">You're All Set! 🎉</h2>
+      <p class="success-desc">
+        LeetCommit is now connected to <strong id="success-repo-link" class="text-green"></strong>.<br>
+        Head over to LeetCode, solve any problem, and it will automatically commit to GitHub!
+      </p>
+
+      <div class="success-actions mt-4">
+        <a href="https://leetcode.com/problems/two-sum/" target="_blank" rel="noopener" class="btn-primary">
+          Open LeetCode (Try Two Sum) &rarr;
+        </a>
+        <a id="success-github-btn" href="#" target="_blank" rel="noopener" class="btn-secondary">
+          Open My GitHub Repository ↗
+        </a>
+      </div>
+    </section>
+
+    <!-- Welcome Page Footer -->
+    <footer class="welcome-footer">
+      <span>100% Client-Side • Scoped PAT Secure</span>
+      <span class="footer-separator">•</span>
+      <span>Developed by <a href="https://github.com/ashutosh110405" target="_blank" rel="noopener">@ashutosh110405</a></span>
+    </footer>
+  </div>
+
+  <script src="welcome.js"></script>
+</body>
+</html>
+

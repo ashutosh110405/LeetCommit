@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeetCommit</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 128 128" width="22" height="22">
+            <path d="M 44 40 L 22 64 L 44 88" fill="none" stroke="#FFA116" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M 50 86 L 68 38 L 86 86" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M 57 70 L 79 70" fill="none" stroke="#FFA116" stroke-width="6" stroke-linecap="round"/>
+            <path d="M 68 38 Q 92 34 102 52 L 102 68" fill="none" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="102" cy="74" r="10" fill="#10B981"/>
+            <circle cx="102" cy="74" r="4.5" fill="#FFFFFF"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">LeetCommit</h1>
+          <p class="brand-subtitle">PAT GitHub Sync</p>
+        </div>
+      </div>
+      <div id="status-pill" class="status-pill disconnected">
+        <span class="status-dot"></span>
+        <span id="status-text">Disconnected</span>
+      </div>
+    </header>
+
+    <!-- Global Alert Message -->
+    <div id="alert-banner" class="alert-banner hidden">
+      <span id="alert-icon"></span>
+      <span id="alert-message"></span>
+    </div>
+
+    <!-- VIEW 1: SETUP FORM -->
+    <main id="setup-view" class="view-content">
+      <div class="card intro-card">
+        <div class="intro-title">Direct GitHub Connection</div>
+        <p class="intro-desc">
+          No 3rd-party OAuth or server. Provide your GitHub Personal Access Token (PAT) scoped <strong>only to your chosen repository</strong>.
+        </p>
+        <button id="toggle-guide-btn" type="button" class="btn-text">
+          <span>📖 How to create a 1-Repo Token</span>
+          <span id="guide-arrow">▼</span>
+        </button>
+        
+        <!-- Collapsible Token Guide -->
+        <div id="token-guide" class="guide-box hidden">
+          <ol class="guide-steps">
+            <li>Go to <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub Fine-grained PAT Settings</a></li>
+            <li>Token name: <code>LeetCommit</code></li>
+            <li>Repository access: Choose <strong>Only select repositories</strong> &rarr; select your leetcode repo</li>
+            <li>Permissions &rarr; Repository permissions: Set <strong>Contents</strong> to <strong>Read and write</strong></li>
+            <li>Click <strong>Generate token</strong> and paste it below!</li>
+          </ol>
+        </div>
+
+        <div style="margin-top: 8px; text-align: right;">
+          <a href="../welcome/welcome.html" target="_blank" class="btn-link">Open Full Setup Wizard &nearr;</a>
+        </div>
+      </div>
+
+      <form id="config-form" class="config-form">
+        <!-- PAT Token Input -->
+        <div class="form-group">
+          <label for="pat-input" class="form-label">
+            <span>Personal Access Token (PAT)</span>
+            <span class="required">*</span>
+          </label>
+          <div class="input-password-wrapper">
+            <input 
+              type="password" 
+              id="pat-input" 
+              class="form-input" 
+              placeholder="github_pat_... or ghp_..." 
+              autocomplete="off" 
+              spellcheck="false" 
+              required
+            />
+            <button type="button" id="toggle-pat-visibility" class="btn-icon" title="Toggle visibility">
+              👁️
+            </button>
+          </div>
+          <button type="button" id="btn-verify-token" class="btn-secondary btn-sm mt-2">
+            Verify Token & Fetch Repos
+          </button>
+        </div>
+
+        <!-- Target Repository Input / Selector -->
+        <div class="form-group">
+          <label for="repo-input" class="form-label">
+            <span>Target Repository</span>
+            <span class="required">*</span>
+          </label>
+          
+          <!-- Dropdown if repos fetched, or text input -->
+          <div id="repo-select-container" class="hidden">
+            <select id="repo-select" class="form-select">
+              <option value="">-- Choose from your repositories --</option>
+            </select>
+          </div>
+
+          <input 
+            type="text" 
+            id="repo-input" 
+            class="form-input" 
+            placeholder="username/repository-name" 
+            spellcheck="false" 
+            required
+          />
+
+          <div class="repo-helper-row">
+            <span class="help-text">Format: username/repo-name</span>
+            <button type="button" id="btn-toggle-create-repo" class="btn-link">
+              + Create new repo
+            </button>
+          </div>
+
+          <!-- New Repo Creator Panel -->
+          <div id="create-repo-panel" class="create-repo-box hidden">
+            <div class="create-repo-title">Create New GitHub Repository</div>
+            <input 
+              type="text" 
+              id="new-repo-name" 
+              class="form-input form-input-sm" 
+              placeholder="e.g. leetcode-solutions" 
+              spellcheck="false"
+            />
+            <div class="checkbox-row">
+              <label class="checkbox-label">
+                <input type="checkbox" id="new-repo-private" checked />
+                <span>Make repository private</span>
+              </label>
+            </div>
+            <button type="button" id="btn-create-repo-submit" class="btn-secondary btn-sm">
+              Create on GitHub
+            </button>
+          </div>
+        </div>
+
+        <!-- Branch & Folder Configuration -->
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="branch-input" class="form-label">Branch</label>
+            <input 
+              type="text" 
+              id="branch-input" 
+              class="form-input" 
+              value="main" 
+              placeholder="main" 
+              spellcheck="false"
+            />
+          </div>
+          <div class="form-group flex-2">
+            <label class="form-label">Folder Structure</label>
+            <select id="folder-format-select" class="form-select">
+              <option value="flat">0001-two-sum/ (Numbered)</option>
+              <option value="difficulty">Easy/0001-two-sum/ (Grouped)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Submit & Cancel Actions -->
+        <div class="form-actions-row mt-3" style="display: flex; gap: 8px;">
+          <button type="submit" id="btn-save-connect" class="btn-primary" style="flex: 1;">
+            <span class="btn-text-content">Save & Connect</span>
+          </button>
+          <button type="button" id="btn-cancel-edit" class="btn-secondary hidden" style="width: auto; padding: 0 16px;">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <!-- VIEW 2: CONNECTED DASHBOARD -->
+    <main id="dashboard-view" class="view-content hidden">
+      <!-- Profile & Repo Card -->
+      <div class="card profile-card">
+        <div class="profile-header">
+          <img id="user-avatar" class="user-avatar" src="" alt="Avatar" />
+          <div class="profile-info">
+            <div class="profile-name-row">
+              <span id="user-name" class="user-name"></span>
+              <span class="active-badge">Active</span>
+            </div>
+            <a id="repo-link" class="repo-badge" href="#" target="_blank" rel="noopener">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1h-8a1 1 0 00-1 1v6.708A2.486 2.486 0 014.5 9h8V1.5z"></path>
+              </svg>
+              <span id="dashboard-repo-name"></span>
+              <span class="external-icon">&nearr;</span>
+            </a>
+          </div>
+        </div>
+        <div class="branch-pill">
+          <span>Branch:</span> <strong id="dashboard-branch">main</strong>
+        </div>
+      </div>
+
+      <!-- Quick Stats Card -->
+      <div class="card stats-card">
+        <div class="stat-item">
+          <div class="stat-value" id="stat-sync-count">0</div>
+          <div class="stat-label">Problems Synced</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-value text-green">Auto</div>
+          <div class="stat-label">Sync Mode</div>
+        </div>
+      </div>
+
+      <!-- Recent Submissions List -->
+      <div class="section-title-row">
+        <span class="section-title">Recent Synced Problems</span>
+        <button id="btn-refresh-history" class="btn-icon-sm" title="Refresh">↻</button>
+      </div>
+
+      <div id="recent-list" class="recent-list">
+        <div class="empty-state">
+          No synced problems yet.<br>
+          Solve any question on LeetCode to auto-commit!
+        </div>
+      </div>
+
+      <!-- Actions Footer -->
+      <div class="dashboard-actions">
+        <button id="btn-edit-config" class="btn-secondary btn-sm">
+          ⚙ Edit Config
+        </button>
+        <button id="btn-disconnect" class="btn-danger btn-sm">
+          Disconnect
+        </button>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div>100% Client-Side • Scoped PAT Secure</div>
+      <div class="developer-credit">
+        Developed by <a href="https://github.com/ashutosh110405" target="_blank" rel="noopener">@ashutosh110405</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+

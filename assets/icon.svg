@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFA116"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+    <linearGradient id="letterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  <!-- Background Card -->
+  <rect x="6" y="6" width="116" height="116" rx="28" fill="url(#bgGrad)" stroke="#334155" stroke-width="2"/>
+  
+  <!-- LeetCode Bracket < -->
+  <path d="M 44 40 L 22 64 L 44 88" fill="none" stroke="url(#orangeGrad)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)"/>
+  
+  <!-- Stylized Letter 'A' in the Center -->
+  <!-- Left leg, right leg, crossbar -->
+  <path d="M 50 86 L 68 38 L 86 86" fill="none" stroke="url(#letterGrad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)"/>
+  <path d="M 57 70 L 79 70" fill="none" stroke="url(#orangeGrad)" stroke-width="6" stroke-linecap="round"/>
+  
+  <!-- Git Branching Line from A's apex to Git Commit node -->
+  <path d="M 68 38 Q 92 34 102 52 L 102 68" fill="none" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Git Commit Node -->
+  <circle cx="102" cy="74" r="10" fill="#10B981" filter="url(#shadow)"/>
+  <circle cx="102" cy="74" r="4.5" fill="#FFFFFF"/>
+</svg>
