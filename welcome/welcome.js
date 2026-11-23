@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 function checkEnvironment() {
   if (window.location.protocol === 'file:') {
     const banner = document.createElement('div');
-    banner.style.cssText = 'background: rgba(255, 161, 22, 0.15); border: 1px solid #FFA116; color: #FFA116; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; text-align: center;';
+    banner.style.cssText = 'background: rgba(229, 9, 20, 0.12); border: 1px solid rgba(229, 9, 20, 0.35); color: #FF6B81; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; text-align: center; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);';
     banner.innerHTML = '⚡ You opened this page directly as a local file. To auto-sync on LeetCode, make sure to also load the extension in <strong>chrome://extensions</strong> via <em>Load unpacked</em>.';
     const container = document.querySelector('.welcome-container');
     if (container) {

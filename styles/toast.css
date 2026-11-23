@@ -1,4 +1,4 @@
-/* LeetCommit Floating Toast & In-Page Widget Styles */
+/* LeetCommit Floating Toast & In-Page Widget (Dark Obsidian & Crimson Theme) */
 
 .leetcommit-toast-container {
   position: fixed;
@@ -17,21 +17,36 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  min-width: 320px;
-  max-width: 440px;
+  min-width: 330px;
+  max-width: 450px;
   padding: 14px 16px;
   border-radius: 12px;
-  background: rgba(13, 17, 23, 0.96);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(48, 54, 61, 0.9);
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  color: #e6edf3;
+  background: rgba(8, 8, 12, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(229, 9, 20, 0.35);
+  box-shadow: 
+    0 16px 36px -4px rgba(0, 0, 0, 0.85), 
+    0 0 20px rgba(229, 9, 20, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #F8FAFC;
   font-size: 13px;
   line-height: 1.5;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   transform: translateY(20px) scale(0.96);
   opacity: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.leetcommit-toast::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, #FF1E27, #B80A12);
 }
 
 .leetcommit-toast.visible {
@@ -41,28 +56,34 @@
 
 .leetcommit-toast-icon {
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  font-weight: 700;
 }
 
 .leetcommit-toast.syncing .leetcommit-toast-icon {
-  background: rgba(255, 161, 22, 0.15);
-  color: #ffa116;
+  background: rgba(229, 9, 20, 0.18);
+  border: 1px solid rgba(229, 9, 20, 0.35);
+  color: #FF2E3E;
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
 }
 
 .leetcommit-toast.success .leetcommit-toast-icon {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: rgba(229, 9, 20, 0.16);
+  border: 1px solid rgba(229, 9, 20, 0.35);
+  color: #FF4D6D;
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.25);
 }
 
 .leetcommit-toast.error .leetcommit-toast-icon {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: rgba(184, 10, 18, 0.25);
+  border: 1px solid rgba(229, 9, 20, 0.5);
+  color: #FFA3AF;
 }
 
 .leetcommit-toast-body {
@@ -70,16 +91,18 @@
 }
 
 .leetcommit-toast-title {
-  font-weight: 600;
-  color: #f0f6fc;
+  font-weight: 700;
+  color: #FFFFFF;
   font-size: 13px;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
+  letter-spacing: -0.1px;
 }
 
 .leetcommit-toast-message {
-  color: #8b949e;
+  color: #A1A1AA;
   font-size: 12px;
   word-break: break-word;
+  line-height: 1.45;
 }
 
 .leetcommit-toast-link {
@@ -87,32 +110,34 @@
   align-items: center;
   gap: 4px;
   margin-top: 6px;
-  color: #58a6ff;
+  color: #FF4D6D;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 12px;
-  transition: color 0.15s;
+  transition: color 0.15s ease, transform 0.15s ease;
 }
 
 .leetcommit-toast-link:hover {
-  color: #79c0ff;
+  color: #FFA3AF;
   text-decoration: underline;
+  transform: translateX(1px);
 }
 
 .leetcommit-toast-close {
   background: transparent;
   border: none;
-  color: #6e7681;
+  color: #71717A;
   font-size: 16px;
   line-height: 1;
   cursor: pointer;
   padding: 2px 4px;
   border-radius: 4px;
-  transition: color 0.15s;
+  transition: all 0.15s ease;
 }
 
 .leetcommit-toast-close:hover {
-  color: #c9d1d9;
+  color: #FF4D6D;
+  background: rgba(229, 9, 20, 0.15);
 }
 
 /* Spinner animation */
@@ -125,9 +150,8 @@
   display: inline-block;
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255, 161, 22, 0.3);
-  border-top-color: #ffa116;
+  border: 2px solid rgba(229, 9, 20, 0.3);
+  border-top-color: #E50914;
   border-radius: 50%;
   animation: lc-spin 0.8s linear infinite;
 }
-

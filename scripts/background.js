@@ -7,7 +7,7 @@ import { commitProblemSolution, validateToken, checkRepository } from './github-
 
 // Setup badge defaults on installation
 chrome.runtime.onInstalled.addListener(async (details) => {
-  chrome.action.setBadgeBackgroundColor({ color: '#10B981' });
+  chrome.action.setBadgeBackgroundColor({ color: '#E50914' });
   console.log('[LeetCommit] Extension installed successfully.');
   
   const config = await chrome.storage.local.get(['github_pat', 'github_repo']);
@@ -160,7 +160,7 @@ async function handleSyncSolution(problemData) {
   // Flash checkmark on extension badge
   try {
     chrome.action.setBadgeText({ text: '✓' });
-    chrome.action.setBadgeBackgroundColor({ color: '#10B981' });
+    chrome.action.setBadgeBackgroundColor({ color: '#E50914' });
     setTimeout(() => {
       chrome.action.setBadgeText({ text: '' });
     }, 4000);
